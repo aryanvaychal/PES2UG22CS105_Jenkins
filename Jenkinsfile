@@ -6,14 +6,22 @@ pipeline {
             steps {
                 checkout([$class: 'GitSCM',
                     branches: [[name: '*/main']],
-                    userRemoteConfigs: [[url: 'https://github.com/aryanvaychal/PES2UG22CS105_Jenkins.git']]
+                    userRemoteConfigs: [[url: 'https://github.com/aryanvaychal/PES2UG22CS105_Jenkins.git']],
+                    extensions: [[$class: 'CleanCheckout']] // Clean clone
                 ])
+            }
+        }
+
+        stage('Debug') {
+            steps {
+                sh 'ls -la'
+                sh 'pwd'
             }
         }
 
         stage('Build') {
             steps {
-                sh 'g++ hello.cpp -o output'
+                sh 'cd $WORKSPACE && g++ hello.cpp -o output'
             }
         }
 
